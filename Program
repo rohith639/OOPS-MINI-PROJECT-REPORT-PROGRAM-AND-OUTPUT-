@@ -1,0 +1,92 @@
+#program
+import java.util.*;
+
+public class StudentAttendanceTracker {
+    static class Student {
+        int id;
+        String name;
+        boolean isPresent;
+
+        Student(int id, String name) {
+            this.id = id;
+            this.name = name;
+            this.isPresent = false;
+        }
+
+        public void markPresent() {
+            isPresent = true;
+        }
+
+        public void markAbsent() {
+            isPresent = false;
+        }
+
+        public void display() {
+            System.out.println(id + "\t" + name + "\t" + (isPresent ? "Present" : "Absent"));
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        ArrayList<Student> students = new ArrayList<>();
+        int choice;
+
+        do {
+            System.out.println("\n--- Student Attendance Tracker ---");
+            System.out.println("1. Add Student");
+            System.out.println("2. Mark Attendance");
+            System.out.println("3. View Attendance");
+            System.out.println("4. Exit");
+            System.out.print("Enter your choice: ");
+            choice = sc.nextInt();
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter Student ID: ");
+                    int id = sc.nextInt();
+                    System.out.print("Enter Student Name: ");
+                    sc.nextLine(); // consume newline
+                    String name = sc.nextLine();
+                    students.add(new Student(id, name));
+                    System.out.println("Student added successfully!");
+                    break;
+
+                case 2:
+                    System.out.print("Enter Student ID to mark attendance: ");
+                    int sid = sc.nextInt();
+                    boolean found = false;
+                    for (Student s : students) {
+                        if (s.id == sid) {
+                            System.out.print("Mark (P/A): ");
+                            char status = sc.next().toUpperCase().charAt(0);
+                            if (status == 'P')
+                                s.markPresent();
+                            else
+                                s.markAbsent();
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found)
+                        System.out.println("Student not found!");
+                    break;
+
+                case 3:
+                    System.out.println("\nID\tName\tStatus");
+                    System.out.println("---------------------------");
+                    for (Student s : students)
+                        s.display();
+                    break;
+
+                case 4:
+                    System.out.println("Exiting program...");
+                    break;
+
+                default:
+                    System.out.println("Invalid choice! Try again.");
+            }
+        } while (choice != 4);
+
+        sc.close();
+    }
+}
